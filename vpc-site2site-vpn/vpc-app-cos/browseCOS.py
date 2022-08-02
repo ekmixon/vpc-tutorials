@@ -29,8 +29,8 @@ api_key = credentials.get('apikey')
 service_instance_id = credentials.get('resource_instance_id')
 
 # Construct auth and cos endpoint
-auth_endpoint = "https://" + iam_host + "/oidc/token"
-service_endpoint = "https://" + cos_host
+auth_endpoint = f"https://{iam_host}/oidc/token"
+service_endpoint = f"https://{cos_host}"
 
 # Create new S3 client
 cos = ibm_boto3.client('s3',
@@ -42,14 +42,13 @@ cos = ibm_boto3.client('s3',
 
 
 def locations(buckets):
-   locs={}
-   for b in buckets:
-      try: 
-         locs[b]=cos.get_bucket_location(Bucket=b)['LocationConstraint']
-      except: 
-         locs[b]=None
-         pass
-   return locs
+    locs={}
+    for b in buckets:
+        try: 
+            locs[b]=cos.get_bucket_location(Bucket=b)['LocationConstraint']
+        except: 
+            locs[b]=None
+    return locs
 
 
 # Index page, unprotected to display some general information
